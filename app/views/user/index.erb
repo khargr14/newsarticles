@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+          <title>The Peoples News.</title>
+          <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+       <title>The Peoples News.</title>
+
+        <a href="/about"> About this page </a>
+        <a href="/createUser"> Create A new User </a>
+        <a href="/login"> Login </a>
+
+        <% if defined?(session[:email]) and session[:email] != nil %>
+
+            <a href="/logout"> Logout </a>        
+            <a href="#workspace"> To Workspace </a>        
+
+        <% end %>
+
+	    <h1> News Articles:</h1>
+	    <ul>
+	    <% @newsarticles.each do |newsarticle| %>
+            <li>
+                <h3><%= newsarticle.title %></h3>
+                <p><%= newsarticle.text %></p>
+                <p>Author: <%= newsarticle.author %></p>
+            </li>
+        <% end %>
+        </ul>
+
+
+         <h2> Users of this app </h2>
+        <ul>
+        <% @users.each do |user| %>
+            <li><%= user.email %></li>
+        <% end %>
+	    </ul>
+
+        <% if defined?(session[:email]) and session[:email] != nil %>
+            <h1 id="#workspace"> Workspace </h1>
+
+            <p> You are logged in as: <%= session[:email] %></p>
+            <p> </p>
+            <p> </p>
+
+            <h2> Create new Article </h2>
+            <ul>
+            <form method="POST" action="newsArticle"> 
+                <input name="title" placeholder="Title">
+                <input name="text" placeholder="Text">
+                <input type="hidden" name="author" value="<%=session[:email]%>">
+                <input type="submit"/>
+            </form>
+            </ul>
+            <p> </p>
+            <p> </p>
+            <p> </p>
+
+            <h2> Your Articles </h2>
+
+
+            <% @newsarticles.each do |newsarticle| %> 
+
+               <% if newsarticle.author == session['email'] %> 
+
+                
+                <ul>
+                    <form method="POST" action="newsArticle/<%=newsarticle[:title]%>"> 
+                        <input id="hidden" type="hidden" name="_method" value="PUT">
+                        <input name="newtitle" value="<%=newsarticle[:title]%>" placeholder="Title">
+                        <input name="newtext" value="<%=newsarticle[:text]%>" placeholder="Text">
+                        <input type="submit"/>
+                    </form>
+
+                    <form method="POST" action="newsArticle/<%=newsarticle[:title]%>"> 
+                        <input id="hidden" type="hidden" name="_method" value="DELETE">
+                        <input name="title" type="hidden" value="<%=newsarticle[:title]%>" placeholder="Title">
+                        <input type="submit" value="Delete"/>
+                    </form>
+                </ul>
+                <% end %>
+            <% end %>
+
+
+
+
+            <p> </p>
+            <p> </p>
+            <p> </p>
+            <a href="#top"> To Top </a>
+        <%end %>
+
+    </body>
+</html>
