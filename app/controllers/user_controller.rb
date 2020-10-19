@@ -1,76 +1,83 @@
 class UserController < ApplicationController
-	
-	get '/' do
-		@users = User.all
-		@newsarticles = Newsarticle.all
-		erb :index
-	  end
-  
-	  get '/about' do
-		@users = User.all
-		erb :about
-	  end
-  
-  
-  
-  
-  
-	  get('/logout') do
-		  session['email'] = nil
-		  redirect '/'
-	  end
-  
-  
-	  get('/login') do
-		  erb :login
-	  end
-  
-  
-	  post('/login') do
-		@users = User.all
-  
-		@users.each do |user|
-		  if params['email'] == user.email && params['password'] == user.password
-			session['email'] = params['email']
-			redirect '/'
-		  end
-		end
-  
-		redirect '/login'
-  
-	  end
+  configure do
+    set :views, 'app/views/'
+  end
 
+  get '/users' do
+    @newsarticles = Newsarticle.all
+    @users = User.all
+    erb :'user/index'
+  end
 
+  get '/about' do
+    @users = User.all
+    erb :'user/about'
+  end
 
-
-
-
-get '/users/createuser' do
-	 erb :'/user/createuser'
-end
-
-post('/createUser') do
-	@users = User.all
-
-	# Check if there already is a user with the email
-	userexists = false
-	@users.each do |user|
-		if params['email'] == user.email 
-			userexists = true
-		 end
-	end
-
-	if userexists 
-		redirect '/createUser'
-	else
-		newUser = {name: params['name'], lastname: params['lastname'], email: params['email'],password:params['password']}
-		User.create(newUser)
-		redirect '/login'
-	end
-	
+  get('/logout') do
+    session['email'] = nil
+    redirect '/'
   end
 
 
+  get('/login') do
+    @user = User.new
+    erb :'user/login'
+  end
 
 
+  post('/user') do
+    if params['email'] && params['password']
+      @current_user = User.where(email: params['email'], password: params['password']).last
+    end
+    if @current_user
+      session['email'] = params['email']
+      redirect '/'
+    else
+      redirect '/login'
+    end
+  end
+
+  post('/login') do
+    if params['email'] && params['password']
+      @current_user = User.where(email: params['email'], password: params['password']).last
+    end
+    if @current_user
+      session['email'] = params['email']
+      redirect '/'
+    else
+      redirect '/login'
+    end
+  end
+
+  get '/users/createuser' do
+    erb :'/user/createuser'
+  end
+
+  post('/createUser') do
+    if params['email']
+      user = User.find_by_email(params['email']) rescue nil
+    end
+    unless user
+      # newUser = {name: params['name'], lastname: params['lastname'], email: params['email'], password: params['password']}
+      user = User.new
+      user.name = params['name']
+      user.lastname = params['lastname']
+      user.email = params['email']
+      user.password = params['password']
+      if user.save
+        puts "@@@@@@@@@@@@@@@@@@@@@@@#{params['email']}@@@@@@@@@@@@@@@@@@@@"
+        session['email'] = params['email']
+        puts "@@@@@@@@@@@@@@@@@@@@@@@#{session['email']}@@@@@@@@@@@@@@@@@@@@"
+
+        redirect '/'
+      else
+        redirect '/createUser'
+      end
+    end
+  end
+
+  get('/createUser') do
+    erb :'/user/createuser'
+  end
 end
