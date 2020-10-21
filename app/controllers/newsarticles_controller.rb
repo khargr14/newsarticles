@@ -28,4 +28,39 @@ class NewsarticlesController < ApplicationController
       redirect "/"
     end
   end
-end
+
+
+    patch ('/newsArticle/:id') do
+      @users = User.all
+      @newsarticles = Newsarticle.all
+
+      erb :index
+    end
+
+    delete ('/newsArticle/:id') do
+      @current_user = User.find_by_email(session['email'])
+
+      @results= Newsarticle.find_by_id( params["id"])
+      if @results == nil
+      @users = User.all
+     @newsarticles = Newsarticle.all
+
+    erb :index
+        else 
+          #want to check to the user that is login
+      if @results.user_id == @current_user.id
+        # go inside to compare
+          @results.destroy
+          @users = User.all
+     @newsarticles = Newsarticle.all
+
+
+          erb :index
+        
+        
+        end
+      end
+
+    end
+
+  end

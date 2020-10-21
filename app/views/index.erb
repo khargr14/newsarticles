@@ -67,19 +67,22 @@
 <p></p>
 <%@current=User.where(email: session[:email]).first%>
 <h2> Your Articles </h2>
-<%=@current.newsarticles.first.title%>
- <% @newsarticles.each do |newsarticle| %>
-    <li>
-      <h3><%= newsarticle.title %></h3>
-      <p><%= newsarticle.text %></p>
-      <p>Author: <%= newsarticle.author %></p>
-    </li>
+<%@current.newsarticles.each do |newsarticle|%>
+ <form method="POST" action="newsArticle/<%=newsarticle.id%>">
+    <input id="hidden" type="hidden" name="_method" value="PATCH">
+    <input name="title" value="<%=newsarticle.title%>">
+    <input name="text" placeholder="<%=newsarticle.text%>">
+    <input type="hidden" name="author" value="<%= session[:email] %>">
+    <input type="submit"/>
+  </form>
+
+  <form method="POST" action="newsArticle/<%=newsarticle.id%>">
+    <input id="hidden" type="hidden" name="_method" value="DELETE">
+   
+    <input type="submit"/>
+  </form>
+
   <% end %>
-
-
-
-
-
 
 <% end %>
 
