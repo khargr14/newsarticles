@@ -2,6 +2,8 @@ class NewsarticlesController < ApplicationController
   get "/" do
     @users = User.all
     @newsarticles = Newsarticle.all
+    @flash_msg = session[:flash_msg]
+    session[:flash_msg] = nil
     erb :index
   end
 
@@ -14,11 +16,15 @@ class NewsarticlesController < ApplicationController
       newsarticle.text = params[:text]
       newsarticle.author = current_user.email
       if newsarticle.save
+        session[:flash_msg] = "Your Article has been published !"
         redirect "/"
       else
+        session[:flash_msg] = "Error: Something went wrong!"
         redirect "/"
       end
+    else
+      session[:flash_msg] = "Please Login First!"
+      redirect "/"
     end
   end
-
 end

@@ -1,4 +1,6 @@
+
 class UserController < ApplicationController
+  
   configure do
     set :views, 'app/views/'
   end
@@ -40,6 +42,7 @@ class UserController < ApplicationController
 
   post('/login') do
     if params['email'] && params['password']
+      puts params['email'] + "  " +  params['password']
       @current_user = User.where(email: params['email'], password: params['password']).last
     end
     if @current_user
@@ -69,12 +72,15 @@ class UserController < ApplicationController
         puts "@@@@@@@@@@@@@@@@@@@@@@@#{params['email']}@@@@@@@@@@@@@@@@@@@@"
         session['email'] = params['email']
         puts "@@@@@@@@@@@@@@@@@@@@@@@#{session['email']}@@@@@@@@@@@@@@@@@@@@"
-
+        session[:flash_msg] = "User successfuly has been created "
         redirect '/'
       else
+        session[:flash_msg] = " Failed !"
         redirect '/createUser'
       end
     end
+    session[:flash_msg] = " User Already Exist!"
+    redirect '/'
   end
 
   get('/createUser') do
