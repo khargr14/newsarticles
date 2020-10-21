@@ -4,4 +4,6 @@ class Newsarticle < ActiveRecord::Base
 	validates :title, presence: true, length: { minimum: 2 }
 	validates :text, presence: true, length: { minimum: 2 }
 	validates :author, presence: true, length: { minimum: 3 }
+	validates :user_id, presence: true
+
 end

@@ -37,6 +37,7 @@
 </ul>
 
 
+
 <h2> Users of this app </h2>
 <ul>
   <% @users.each do |user| %>
@@ -45,7 +46,7 @@
 </ul>
 
 <% if defined?(session[:email]) and session[:email] != nil %>
-  <h1 id="#workspace"> Workspace </h1>
+  <h1 id="workspace"> Workspace </h1>
 
   <p> You are logged in as: <%= session[:email] %></p>
   <p></p>
@@ -64,8 +65,22 @@
 <p></p>
 <p></p>
 <p></p>
-
+<%@current=User.where(email: session[:email]).first%>
 <h2> Your Articles </h2>
+
+ <% @newsarticles.each do |newsarticle| %>
+    <li>
+      <h3><%= newsarticle.title %></h3>
+      <p><%= newsarticle.text %></p>
+      <p>Author: <%= newsarticle.author %></p>
+    </li>
+  <% end %>
+
+
+
+
+
+
 <% end %>
 
 </body>
