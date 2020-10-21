@@ -15,6 +15,7 @@ class NewsarticlesController < ApplicationController
       newsarticle.title = params[:title]
       newsarticle.text = params[:text]
       newsarticle.author = current_user.email
+      newsarticle.user_id = current_user.id
       if newsarticle.save
         session[:flash_msg] = "Your Article has been published !"
         redirect "/"

@@ -67,7 +67,7 @@
 <p></p>
 <%@current=User.where(email: session[:email]).first%>
 <h2> Your Articles </h2>
-
+<%=@current.newsarticles.first.title%>
  <% @newsarticles.each do |newsarticle| %>
     <li>
       <h3><%= newsarticle.title %></h3>
