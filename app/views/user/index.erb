@@ -17,8 +17,7 @@
             <a href="#workspace"> To Workspace </a>        
 
         <% end %>
-
-	    <h1> News Articles:</h1>
+        <h1> News Articles:</h1>
 	    <ul>
 	    <% @newsarticles.each do |newsarticle| %>
             <li>
@@ -56,13 +55,8 @@
             <p> </p>
 
             <h2> Your Articles </h2>
-
-
-            <% @newsarticles.each do |newsarticle| %> 
-
-               <% if newsarticle.author == session['email'] %> 
-
-                
+             <% @newsarticles.each do |newsarticle| %>
+              <% if newsarticle.author == session['email'] %>
                 <ul>
                     <form method="POST" action="newsArticle/<%=newsarticle[:title]%>"> 
                         <input id="hidden" type="hidden" name="_method" value="PUT">
@@ -79,15 +73,10 @@
                 </ul>
                 <% end %>
             <% end %>
-
-
-
-
             <p> </p>
             <p> </p>
             <p> </p>
             <a href="#top"> To Top </a>
         <%end %>
-
     </body>
 </html>

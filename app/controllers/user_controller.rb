@@ -1,6 +1,4 @@
-
 class UserController < ApplicationController
-  
   configure do
     set :views, 'app/views/'
   end
@@ -42,7 +40,7 @@ class UserController < ApplicationController
 
   post('/login') do
     if params['email'] && params['password']
-      puts params['email'] + "  " +  params['password']
+      puts params['email'] + "  " + params['password']
       @current_user = User.where(email: params['email'], password: params['password']).last
     end
     if @current_user
@@ -59,19 +57,16 @@ class UserController < ApplicationController
 
   post('/createUser') do
     if params['email']
-      user = User.find_by_email(params['email']) rescue nil
+      user = User.find_by_email(params['email'])
     end
     unless user
-      # newUser = {name: params['name'], lastname: params['lastname'], email: params['email'], password: params['password']}
       user = User.new
       user.name = params['name']
       user.lastname = params['lastname']
       user.email = params['email']
       user.password = params['password']
       if user.save
-        puts "@@@@@@@@@@@@@@@@@@@@@@@#{params['email']}@@@@@@@@@@@@@@@@@@@@"
         session['email'] = params['email']
-        puts "@@@@@@@@@@@@@@@@@@@@@@@#{session['email']}@@@@@@@@@@@@@@@@@@@@"
         session[:flash_msg] = "User successfuly has been created "
         redirect '/'
       else

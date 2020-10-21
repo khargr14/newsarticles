@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The Peoples News.</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<title>The Peoples News.Create New Article</title>
+<h2> Create new Article </h2>
+<ul>
+  <form method="POST" action="/newsArticle">
+    <input name="title" placeholder="Title">
+    <input name="text" placeholder="Text">
+    <input type="hidden" name="author" value="<%= session[:email] %>">
+    <input type="submit"/>
+  </form>
+</ul>
+<br><br>
+<a href="/"> Back to main page. </a>
+</body>
+</html>

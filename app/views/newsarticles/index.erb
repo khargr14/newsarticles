@@ -22,23 +22,11 @@
 <% end %>
 <h1> News Articles:</h1>
 <ul>
-
   <% @newsarticles.each do |newsarticle| %>
     <li>
       <h3><%= newsarticle.title %></h3>
       <p><%= newsarticle.text %></p>
       <p>Author: <%= newsarticle.author %></p>
-      <% if defined?(session[:email]) and session[:email] != nil and @current_user %>
-      <%if newsarticle.user_id.to_s == @current_user.id.to_s %>
-      <p><a href="/newsArticle/<%=newsarticle.id%>/edit"> Edit </a> | <a href="/newsArticle/<%=newsarticle.id%>/show"> Show </a>
-        <form method="POST" action="/newsArticle/<%=newsarticle.id%>/destroy">
-          <input id="hidden" type="hidden" name="_method" value="DELETE">
-          <input type ="submit" name ="" value ="Delete Article">
-          <!--<input type="submit"/> -->
-        </form>
-      </p>
-        <%end %>
-      <%end %>
     </li>
   <% end %>
 </ul>
@@ -55,12 +43,35 @@
   <p></p>
   <p></p>
 
-  <% if defined?(session[:email]) and session[:email] != nil %>
-<h2> <a href="/newsarticles/new">Create new Article</a> </h2>
-    <%end%>
+
+<h2> Create new Article </h2>
+<ul>
+  <form method="POST" action="newsArticle">
+    <input name="title" placeholder="Title">
+    <input name="text" placeholder="Text">
+    <input type="hidden" name="author" value="<%= session[:email] %>">
+    <input type="submit"/>
+  </form>
+</ul>
 <p></p>
 <p></p>
 <p></p>
+<%@current=User.where(email: session[:email]).first%>
+<h2> Your Articles </h2>
+<%@current.newsarticles.each do |newsarticle|%>
+ <form method="POST" action="newsArticle/<%=newsarticle.id%>">
+    <input id="hidden" type="hidden" name="_method" value="PATCH">
+    <input name="title" value="<%=newsarticle.title%>">
+    <input name="text" placeholder="<%=newsarticle.text%>">
+    <input type="hidden" name="author" value="<%= session[:email] %>">
+    <input type="submit"/>
+  </form>
+  <form method="POST" action="newsArticle/<%=newsarticle.id%>">
+    <input id="hidden" type="hidden" name="_method" value="DELETE">
+    <input type ="submit" name ="" value ="Delete Article">
+    <!--<input type="submit"/> -->
+  </form>
+  <% end %>
 <% end %>
 
 </body>
