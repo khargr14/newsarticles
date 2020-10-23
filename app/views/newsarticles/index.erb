@@ -48,9 +48,8 @@
 <ul>
   <form method="POST" action="newsArticle">
     <input name="title" placeholder="Title">
-  <!--  <input name="text" placeholder="Text"> -->
+  <input name="text" placeholder="Text">
     <!--to make the text bigger-->
-   <textarea name="description" placeholder="Enter each article on a new line" style="height:100px; width:200px"></textarea><br></br>
 
     <input type="hidden" name="author" value="<%= session[:email] %>">
     <input type="submit"/>
