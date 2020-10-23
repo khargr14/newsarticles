@@ -8,8 +8,11 @@
 <title>The Peoples News. Edit </title>
 <form method="POST" action="/newsArticle/<%=@newsarticle.id%>/update">
   <input id="hidden" type="hidden" name="_method" value="PATCH">
-  <input name="title" value="<%=@newsarticle.title%>">
-  <input name="text" value="<%=@newsarticle.text%>">
+<!--  <input name="title" value="<%=@newsarticle.title%>"> -->
+  <textarea name="title" value="<%=@newsarticle.title%>" style="height:100px; width:200px" ></textarea>
+
+<!-- <input name="text" value="<%=@newsarticle.text%>"> -->
+<textarea name="text" value="<%=@newsarticle.text%>" style="height:100px; width:200px"></textarea>
   <input type="hidden" name="author" value="<%= session[:email] %>">
   <input type="submit"/>
 </form>

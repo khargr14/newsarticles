@@ -8,14 +8,14 @@
 <title>The Peoples News.Create New Article</title>
 <h2> Create new Article </h2>
 <ul>
-  <form method="POST" action="/newsArticle">
+    <form method="POST" action="/newsArticle">
  <!--  <input name="title" placeholder="Title"> -->
- <textarea name="title" placeholder="Title" style="height:100px; width:200px"></textarea><br>
+    <textarea name="title" placeholder="Title" style="height:100px; width:200px"></textarea><br>
 
 
 
-<!--  <input name="text" placeholder="Text"> -->
- <textarea name="text" placeholder="Text" style="height:100px; width:200px"></textarea><br> 
+<!-- <input name="text" placeholder="Text"> -->
+    <textarea name="text" placeholder="Text" style="height:100px; width:200px"></textarea><br> 
     <input type="hidden" name="author" value="<%= session[:email] %>">
     <input type="submit"/>
   </form>
