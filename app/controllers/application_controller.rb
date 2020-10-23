@@ -10,4 +10,4 @@ class ApplicationController < Sinatra::Base
     set :session_secret, "happy"
   end
 
-end
+end 
