@@ -8,7 +8,6 @@
 
 class NewsarticlesController < ApplicationController
   get "/" do
-    @current_user = User.where(email: session[:email]).first
     @users = User.all
     @newsarticles = Newsarticle.all
     @flash_msg = session[:flash_msg]
@@ -16,20 +15,15 @@ class NewsarticlesController < ApplicationController
     erb :index
   end
 
+  #new
   get("/newsarticles/new") do
     erb :'newsarticles/new'
   end
 
-
-  post("/newsArticle") do
-    puts "#{session['email']}"
-    current_user = User.find_by_email(session['email']) rescue nil
+  #create
+  post("/newsarticles/create") do
     if params[:title] && params[:text] && current_user
-      newsarticle = Newsarticle.new
-      newsarticle.title = params[:title]
-      newsarticle.text = params[:text]
-      newsarticle.author = current_user.email
-      newsarticle.user_id = current_user.id
+      newsarticle = current_user.newsarticles.new(title: params[:title], text: params[:text])
       if newsarticle.save
         session[:flash_msg] = "Your Article has been published !"
         redirect "/"
@@ -43,22 +37,23 @@ class NewsarticlesController < ApplicationController
     end
   end
 
-
-  get '/newsArticle/:id/show' do
-    @newsarticle = Newsarticle.find_by_id(params["id"])
-    erb :'newsarticles/show'
+  #show
+  get '/newsarticle/:id' do
+    newsarticle = Newsarticle.find_by_id(params["id"])
+    erb :'newsarticles/show', locals: {newsarticle: newsarticle}
   end
 
-  get '/newsArticle/:id/edit' do
-    @newsarticle = Newsarticle.find_by_id(params["id"])
-    erb :'newsarticles/edit'
+  #edit
+  get '/newsarticle/:id/edit' do
+    newsarticle = Newsarticle.find_by_id(params["id"])
+    erb :'newsarticles/edit', locals: {newsarticle: newsarticle}
+
   end
 
-  patch '/newsArticle/:id/update' do
-    # binding.pry
-    @current_user = User.find_by_email(session['email'])
-    article = Newsarticle.find_by_id(params["id"])
-    if article && article.user_id.to_s == @current_user.id.to_s
+  #update
+  patch '/newsarticles/:id' do
+    article = current_user.newsarticles.find(params["id"])
+    if article && article.user_id.to_s == current_user.id.to_s
       article.title = params['title']
       article.text = params['text']
       if article.save
@@ -73,10 +68,10 @@ class NewsarticlesController < ApplicationController
     end
   end
 
-  delete '/newsArticle/:id/destroy' do
-    @current_user = User.find_by_email(session['email'])
-    article = Newsarticle.find_by_id(params["id"])
-    if article && article.user_id.to_s == @current_user.id.to_s
+  #destory
+  delete '/newsarticle/:id' do
+    article = current_user.newsarticles.find(params["id"])
+    if article && article.user_id.to_s == current_user.id.to_s
       if article.destroy
         session[:flash_msg] = "Atricle has been destroyed!"
         redirect "/"

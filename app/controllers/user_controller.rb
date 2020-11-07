@@ -10,67 +10,41 @@ class UserController < ApplicationController
   end
 
   get '/about' do
-    @users = User.all
     erb :'user/about'
   end
 
-  get('/logout') do
-    session['email'] = nil
-    redirect '/'
-  end
-
-
-  get('/login') do
-    @user = User.new
+  get('/user/login') do
     erb :'user/login'
   end
 
-
-  post('/user') do
+  post('/user/login') do
     if params['email'] && params['password']
-      @current_user = User.where(email: params['email'], password: params['password']).last
-    end
-    if @current_user
-      session['email'] = params['email']
-      redirect '/'
+      current_user = User.find_by_email(params['email'])
+      if current_user&.authenticate(params['password'])
+        session['email'] = params['email']
+        redirect '/'
+      else
+        redirect '/user/login'
+      end
     else
-      redirect '/login'
+      redirect '/user/login'
     end
   end
 
-  post('/login') do
-    if params['email'] && params['password']
-      puts params['email'] + "  " + params['password']
-      @current_user = User.where(email: params['email'], password: params['password']).last
-    end
-    if @current_user
-      session['email'] = params['email']
-      redirect '/'
-    else
-      redirect '/login'
-    end
-  end
-
-  get '/users/createuser' do
-    erb :'/user/createuser'
-  end
 
   post('/createUser') do
-    if params['email']
-      user = User.find_by_email(params['email'])
-    end
+    user = User.find_by_email(params['email']) if params['email']
     unless user
-      user = User.new
-      user.name = params['name']
-      user.lastname = params['lastname']
-      user.email = params['email']
-      user.password = params['password']
+      user = User.new(name: params['name'],
+                      lastname: params['lastname'],
+                      email: params['email'],
+                      password: params['password'])
       if user.save
         session['email'] = params['email']
         session[:flash_msg] = "User successfuly has been created "
         redirect '/'
       else
-        session[:flash_msg] = " Failed !"
+        session[:flash_msg] = " Failed: HINT[#{user.errors.messages}]"
         redirect '/createUser'
       end
     end
@@ -78,7 +52,13 @@ class UserController < ApplicationController
     redirect '/'
   end
 
-  get('/createUser') do
+  get('/user/new') do
     erb :'/user/createuser'
   end
+
+  get('/logout') do
+    session['email'] = nil
+    redirect '/'
+  end
+
 end

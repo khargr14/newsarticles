@@ -6,18 +6,19 @@
 </head>
 <body>
 <title>The Peoples News.</title>
-<% if defined?(@flash_msg)  and @flash_msg != nil %>
+<% if defined?(@flash_msg) and @flash_msg != nil %>
   <div style="text-align: center">
-    <%= "Notice: *********#{@flash_msg}************"  %>
+    <%= "Notice: *********#{@flash_msg}************" %>
     <br>
   </div>
-<%end %>
-<a href="/about"> About this page </a> 
-<a href="/createUser"> Create A new User </a>
-<a href="/login"> Login </a>
+<% end %>
+<a href="/about"> About this page </a> &nbsp;|&nbsp;
+<a href="/user/new"> Create A new User </a>&nbsp; |&nbsp;
+<a href="/user/login"> Login </a>
+
 
 <% if defined?(session[:email]) and session[:email] != nil %>
-  <a href="/logout"> Logout </a>
+  &nbsp;|&nbsp;<a href="/logout"> Logout </a> &nbsp;|&nbsp;
   <a href="#workspace"> To Workspace </a>
 <% end %>
 <h1> News Articles:</h1>
@@ -27,18 +28,19 @@
     <li>
       <h3><%= newsarticle.title %></h3>
       <p><%= newsarticle.text %></p>
-      <p>Author: <%= newsarticle.author %></p>
-      <% if defined?(session[:email]) and session[:email] != nil and @current_user %>
-      <%if newsarticle.user_id.to_s == @current_user.id.to_s %>
-      <p><a href="/newsArticle/<%=newsarticle.id%>/edit"> Edit </a> | <a href="/newsArticle/<%=newsarticle.id%>/show"> Show </a>
-        <form method="POST" action="/newsArticle/<%=newsarticle.id%>/destroy">
-          <input id="hidden" type="hidden" name="_method" value="DELETE">
-          <input type ="submit" name ="" value ="Delete Article">
-          <!--<input type="submit"/> -->
-        </form>
-      </p>
-        <%end %>
-      <%end %>
+      <p>Author: <%= newsarticle.user.email %></p>
+      <% if defined?(session[:email]) and session[:email] != nil and current_user %>
+        <% if newsarticle.user_id.to_s == current_user.id.to_s %>
+          <p><a href="/newsarticle/<%= newsarticle.id %>/edit"> Edit </a> |
+            <a href="/newsarticle/<%= newsarticle.id %>"> Show </a>
+          <form method="POST" action="/newsarticle/<%= newsarticle.id %>">
+            <input id="hidden" type="hidden" name="_method" value="DELETE">
+            <input type="submit" name="" value="Delete Article">
+            <!--<input type="submit"/> -->
+          </form>
+          </p>
+        <% end %>
+      <% end %>
     </li>
   <% end %>
 </ul>
@@ -56,11 +58,11 @@
   <p></p>
 
   <% if defined?(session[:email]) and session[:email] != nil %>
-<h2> <a href="/newsarticles/new">Create new Article</a> </h2>
-    <%end%>
-<p></p>
-<p></p>
-<p></p>
+    <h2><a href="/newsarticles/new">Create new Article</a></h2>
+  <% end %>
+  <p></p>
+  <p></p>
+  <p></p>
 <% end %>
 
 </body>

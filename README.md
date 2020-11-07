@@ -9,3 +9,6 @@ commands: $
 4- rake db:seed
 
 run local server: bundle exec rackup -p 3000
+run console locally:  
+1- $ irb
+2- add line console require_relative './config/environment'

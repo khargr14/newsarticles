@@ -1,7 +1,7 @@
 require './config/environment'
 
 class ApplicationController < Sinatra::Base
-  
+  include ApplicationHelper
 
   configure do
     set :public_folder, 'public'
