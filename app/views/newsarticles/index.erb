@@ -31,9 +31,9 @@
       <p>Author: <%= newsarticle.user.email %></p>
       <% if defined?(session[:email]) and session[:email] != nil and current_user %>
         <% if newsarticle.user_id.to_s == current_user.id.to_s %>
-          <p><a href="/newsarticle/<%= newsarticle.id %>/edit"> Edit </a> |
-            <a href="/newsarticle/<%= newsarticle.id %>"> Show </a>
-          <form method="POST" action="/newsarticle/<%= newsarticle.id %>">
+          <p><a href="/newsarticles/<%= newsarticle.id %>/edit"> Edit </a> |
+            <a href="/newsarticles/<%= newsarticle.id %>"> Show </a>
+          <form method="POST" action="/newsarticles/<%= newsarticle.id %>">
             <input id="hidden" type="hidden" name="_method" value="DELETE">
             <input type="submit" name="" value="Delete Article">
             <!--<input type="submit"/> -->

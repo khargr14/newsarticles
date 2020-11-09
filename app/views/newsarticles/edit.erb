@@ -6,19 +6,19 @@
 </head>
 <body>
 <title>The Peoples News. Edit </title>
-<form method="POST" action="/newsarticles/<%= newsarticle.id %>">
+<form method="POST" action="/newsarticles/<%= @newsarticle.id %>">
 
   <input id="hidden" type="hidden" name="_method" value="PATCH">
-  <p>Title: <textarea name="title" placeholder="<%= newsarticle.title %>" style="height:100px; width:200px"></textarea>
+  <p>Title: <textarea name="title" placeholder="<%= @newsarticle.title %>" style="height:100px; width:200px"></textarea>
   </p>
   <p> Text:
-    <textarea name="text" placeholder="<%= newsarticle.text %>" style="height:100px; width:200px"></textarea>
+    <textarea name="text" placeholder="<%= @newsarticle.text %>" style="height:100px; width:200px"></textarea>
   </p>
 
   <input type="hidden" name="author" value="<%= session[:email] %>">
   <input type="submit"/>
 </form>
 <br><br>
-<a href="/"> Back to main page. </a>
+<a href="/newsarticles"> Back to main page. </a>
 </body>
 </html>

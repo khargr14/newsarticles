@@ -7,12 +7,13 @@
 #3) your routes should correspond to those views (in the articles controller)
 
 class NewsarticlesController < ApplicationController
-  get "/" do
+
+  get "/newsarticles" do
     @users = User.all
     @newsarticles = Newsarticle.all
     @flash_msg = session[:flash_msg]
     session[:flash_msg] = nil
-    erb :index
+    erb :'newsarticles/index'
   end
 
   #new
@@ -38,22 +39,22 @@ class NewsarticlesController < ApplicationController
   end
 
   #show
-  get '/newsarticle/:id' do
-    newsarticle = Newsarticle.find_by_id(params["id"])
-    erb :'newsarticles/show', locals: {newsarticle: newsarticle}
+  get '/newsarticles/:id' do
+    @newsarticle = Newsarticle.find_by_id(params["id"])
+    erb :'newsarticles/show'
   end
 
   #edit
-  get '/newsarticle/:id/edit' do
-    newsarticle = Newsarticle.find_by_id(params["id"])
-    erb :'newsarticles/edit', locals: {newsarticle: newsarticle}
+  get '/newsarticles/:id/edit' do
+    @newsarticle = Newsarticle.find_by_id(params["id"])
+    erb :'newsarticles/edit'
 
   end
 
   #update
   patch '/newsarticles/:id' do
-    article = current_user.newsarticles.find(params["id"])
-    if article && article.user_id.to_s == current_user.id.to_s
+    if current_user.newsarticles.find_by_id(params["id"])
+      article = current_user.newsarticles.find_by_id(params["id"])
       article.title = params['title']
       article.text = params['text']
       if article.save
@@ -69,7 +70,7 @@ class NewsarticlesController < ApplicationController
   end
 
   #destory
-  delete '/newsarticle/:id' do
+  delete '/newsarticles/:id' do
     article = current_user.newsarticles.find(params["id"])
     if article && article.user_id.to_s == current_user.id.to_s
       if article.destroy

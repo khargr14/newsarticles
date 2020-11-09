@@ -1,4 +1,4 @@
-class UserController < ApplicationController
+class UsersController < ApplicationController
   configure do
     set :views, 'app/views/'
   end
@@ -22,7 +22,7 @@ class UserController < ApplicationController
       current_user = User.find_by_email(params['email'])
       if current_user&.authenticate(params['password'])
         session['email'] = params['email']
-        redirect '/'
+        redirect '/newsarticles'
       else
         redirect '/user/login'
       end
@@ -32,7 +32,7 @@ class UserController < ApplicationController
   end
 
 
-  post '/createuser' do
+  post '/user/signup' do
     user = User.find_by_email(params['email']) if params['email']
     unless user
       user = User.new(name: params['name'],
@@ -52,7 +52,7 @@ class UserController < ApplicationController
     redirect '/'
   end
 
-  get '/user/new' do
+  get '/user/signup' do
     erb :'/user/createuser'
   end
 
