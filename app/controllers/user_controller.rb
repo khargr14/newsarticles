@@ -32,7 +32,7 @@ class UserController < ApplicationController
   end
 
 
-  post('/createUser') do
+  post('/createuser') do
     user = User.find_by_email(params['email']) if params['email']
     unless user
       user = User.new(name: params['name'],
@@ -45,7 +45,7 @@ class UserController < ApplicationController
         redirect '/'
       else
         session[:flash_msg] = " Failed: HINT[#{user.errors.messages}]"
-        redirect '/createUser'
+        redirect '/createuser'
       end
     end
     session[:flash_msg] = " User Already Exist!"
