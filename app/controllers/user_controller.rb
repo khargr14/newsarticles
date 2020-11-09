@@ -13,11 +13,11 @@ class UserController < ApplicationController
     erb :'user/about'
   end
 
-  get('/user/login') do
+  get'/user/login' do
     erb :'user/login'
   end
 
-  post('/user/login') do
+  post'/user/login' do
     if params['email'] && params['password']
       current_user = User.find_by_email(params['email'])
       if current_user&.authenticate(params['password'])
@@ -32,7 +32,7 @@ class UserController < ApplicationController
   end
 
 
-  post('/createuser') do
+  post '/createuser' do
     user = User.find_by_email(params['email']) if params['email']
     unless user
       user = User.new(name: params['name'],
@@ -52,11 +52,11 @@ class UserController < ApplicationController
     redirect '/'
   end
 
-  get('/user/new') do
+  get '/user/new' do
     erb :'/user/createuser'
   end
 
-  get('/logout') do
+  get '/logout' do
     session['email'] = nil
     redirect '/'
   end

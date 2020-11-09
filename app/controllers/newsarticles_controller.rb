@@ -16,12 +16,12 @@ class NewsarticlesController < ApplicationController
   end
 
   #new
-  get("/newsarticles/new") do
+  get "/newsarticles/new" do
     erb :'newsarticles/new'
   end
 
   #create
-  post("/newsarticles/create") do
+  post "/newsarticles/create" do
     if params[:title] && params[:text] && current_user
       newsarticle = current_user.newsarticles.new(title: params[:title], text: params[:text])
       if newsarticle.save
