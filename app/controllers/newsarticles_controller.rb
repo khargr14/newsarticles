@@ -27,14 +27,14 @@ class NewsarticlesController < ApplicationController
       newsarticle = current_user.newsarticles.new(title: params[:title], text: params[:text])
       if newsarticle.save
         session[:flash_msg] = "Your Article has been published !"
-        redirect "/"
+        redirect "/newsarticles"
       else
         session[:flash_msg] = "Error: Something went wrong!"
-        redirect "/"
+        redirect "/newsarticles"
       end
     else
       session[:flash_msg] = "Please Login First!"
-      redirect "/"
+      redirect "/newsarticles"
     end
   end
 
@@ -59,13 +59,13 @@ class NewsarticlesController < ApplicationController
       article.text = params['text']
       if article.save
         session[:flash_msg] = "NewsArticle Updated successfully!"
-        redirect "/"
+        redirect "/newsarticles"
       else
         session[:flash_msg] = "Failed!"
-        redirect "/"
+        redirect "/newsarticles"
       end
     else
-      redirect "/"
+      redirect "/newsarticles"
     end
   end
 
@@ -74,15 +74,15 @@ class NewsarticlesController < ApplicationController
     article = current_user.newsarticles.find(params["id"])
     if article && article.user_id.to_s == current_user.id.to_s
       if article.destroy
-        session[:flash_msg] = "Atricle has been destroyed!"
-        redirect "/"
+        session[:flash_msg] = "Article has been destroyed!"
+        redirect "/newsarticles"
       else
         session[:flash_msg] = "Failed !"
-        redirect "/"
+        redirect "/newsarticles"
       end
     else
       session[:flash_msg] = "Destroy Failed!"
-      redirect "/"
+      redirect "/newsarticles"
     end
   end
 end

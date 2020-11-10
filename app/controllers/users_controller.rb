@@ -10,29 +10,29 @@ class UsersController < ApplicationController
   end
 
   get '/about' do
-    erb :'user/about'
+    erb :'users/about'
   end
 
-  get'/user/login' do
-    erb :'user/login'
+  get'/users/login' do
+    erb :'users/login'
   end
 
-  post'/user/login' do
+  post'/users/login' do
     if params['email'] && params['password']
       current_user = User.find_by_email(params['email'])
       if current_user&.authenticate(params['password'])
         session['email'] = params['email']
         redirect '/newsarticles'
       else
-        redirect '/user/login'
+        redirect '/users/login'
       end
     else
-      redirect '/user/login'
+      redirect '/users/login'
     end
   end
 
 
-  post '/user/signup' do
+  post '/users/signup' do
     user = User.find_by_email(params['email']) if params['email']
     unless user
       user = User.new(name: params['name'],
@@ -45,15 +45,15 @@ class UsersController < ApplicationController
         redirect '/'
       else
         session[:flash_msg] = " Failed: HINT[#{user.errors.messages}]"
-        redirect '/createuser'
+        redirect '/signup' #createuser
       end
     end
     session[:flash_msg] = " User Already Exist!"
     redirect '/'
   end
 
-  get '/user/signup' do
-    erb :'/user/createuser'
+  get '/users/signup' do
+    erb :'/users/signup'
   end
 
   get '/logout' do
